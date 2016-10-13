@@ -38,8 +38,6 @@ def _get_bucket():
     )
 
     bucket = settings.AWS_STORAGE_BUCKET_NAME
-    if settings.MEDUSA_AWS_STORAGE_BUCKET_NAME:
-        bucket = settings.MEDUSA_AWS_STORAGE_BUCKET_NAME
     return conn.get_bucket(bucket)
 
 
@@ -138,9 +136,8 @@ class S3StaticSiteRenderer(BaseStaticSiteRenderer):
             aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
         )
         bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-        if settings.MEDUSA_AWS_STORAGE_BUCKET_NAME:
-            bucket_name = settings.MEDUSA_AWS_STORAGE_BUCKET_NAME
-        self.conn.get_bucket(bucket_name)
+        
+        self.bucket = self.conn.get_bucket(bucket_name)
         self.bucket.configure_website("index.html", "500.html")
         self.server_root_path = self.bucket.get_website_endpoint()
 
